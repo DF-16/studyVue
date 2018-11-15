@@ -22,7 +22,7 @@
             </label>
             <input type="button" value="添加" @click="add">
             <label>
-                搜索名称关键字:<input type="text" name="name">
+                搜索名称关键字:<input type="text" name="keywords" v-model = "keywords">
             </label>
         </form>
         <table>
@@ -35,10 +35,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in lists">
-                    <td>{{item.id}}</td>
-                    <td>{{item.name}}</td>
-                    <td>{{item.ctime}}</td>
+                <tr v-for="item in search(keywords)">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.ctime | formate }}</td>
                     <td><a href="" @click.prevent="del(item.id)">删除</a></td>
                 </tr>
             </tbody>
@@ -46,11 +46,21 @@
     </div>
 
 <script>
+    Vue.filter('formate', function (dateStr) {
+        
+
+        var y = dateStr.getFullYear();
+        var m = dateStr.getMonth();
+        var d = dateStr.getDay();
+
+        return `${y}-${m}-${d}`;
+    })
     var vm = new Vue({
         el: '#app',
         data: {
             id: '',
             name: '',
+            keywords: '',
             lists: [
                 {
                     id: 1,
@@ -84,15 +94,30 @@
                 })
             },*/
             del (id) {
-               var index = this.lists.findIndex(item => {
-                    if (item.id == id) {
-                        return true;
-                    }
-                })
+               var index = this.lists.findIndex(function (item) {
+                   if (item.id == id) {
+                       return true;
+                   }
+               })
             this.lists.splice(index, 1);
-            }
+            },
+            /*search (keywords) {
+                var newlist = [];
+                this.lists.forEach(item => {
+                    if ( item.name.indexOf(keywords) != -1) {
+                        newlist.push(item);
+                    };
+                });
+                return newlist;
+            }*/
+            search(keywords) {
+                return this.lists.filter(item => {
+                    if (item.name.includes(keywords)) {
+                        return item;
+                    };
+                });
+            },
         },
-            
     })
 </script>
 
