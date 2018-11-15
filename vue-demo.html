@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>品牌列表案例</title>
+    <link rel="stylesheet" href="./lib/animate.css">
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <form action="">
+            <label>
+                id:<input type="text" name="id" v-model="id">
+            </label>
+            <label>
+                name:<input type="text" name="name" v-model="name">
+            </label>
+            <input type="button" value="添加" @click="add">
+            <label>
+                搜索名称关键字:<input type="text" name="name">
+            </label>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>品牌名称</th>
+                    <th>添加时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in lists">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.ctime}}</td>
+                    <td><a href="" @click.prevent="del(item.id)">删除</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            id: '',
+            name: '',
+            lists: [
+                {
+                    id: 1,
+                    name: '奔驰',
+                    ctime: new Date()
+                },
+                {
+                    id: 2,
+                    name: '宝马',
+                    ctime: new Date()
+                },
+                {
+                    id: 3,
+                    name: '奥迪',
+                    ctime: new Date()
+                }
+            ]
+        },
+        methods: {
+            add () {
+                var car = {id: this.id, name: this.name, ctime: new Date()}
+                this.lists.push(car)
+                this.id = this.name = ''
+            },
+            del (id) {
+                this.lists.some((item, i) => {
+                    if (item.id == id) {
+                        this.lists.splice(i, 1)
+                        return true;
+                    }
+                })
+            },
+
+        },
+            
+    })
+</script>
+
+</body>
+</html>
