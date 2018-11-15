@@ -18,11 +18,11 @@
                 id:<input type="text" name="id" v-model="id">
             </label>
             <label>
-                name:<input type="text" name="name" v-model="name">
+                name:<input type="text" name="name" v-model="name" @keyup.enter="add">
             </label>
             <input type="button" value="添加" @click="add">
             <label>
-                搜索名称关键字:<input type="text" name="keywords" v-model = "keywords">
+                搜索名称关键字:<input type="text" name="keywords" v-model = "keywords" v-color="'red'">
             </label>
         </form>
         <table>
@@ -47,13 +47,17 @@
 
 <script>
     Vue.filter('formate', function (dateStr) {
-        
 
         var y = dateStr.getFullYear();
         var m = dateStr.getMonth();
         var d = dateStr.getDay();
 
         return `${y}-${m}-${d}`;
+    })
+    Vue.directive('color', {
+        bind: function (el, binding) {
+            el.style.color = binding.value;
+        }
     })
     var vm = new Vue({
         el: '#app',
