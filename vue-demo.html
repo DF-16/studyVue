@@ -75,15 +75,22 @@
                 this.lists.push(car)
                 this.id = this.name = ''
             },
-            del (id) {
+            /*del (id) {
                 this.lists.some((item, i) => {
                     if (item.id == id) {
                         this.lists.splice(i, 1)
                         return true;
                     }
                 })
-            },
-
+            },*/
+            del (id) {
+               var index = this.lists.findIndex(item => {
+                    if (item.id == id) {
+                        return true;
+                    }
+                })
+            this.lists.splice(index, 1);
+            }
         },
             
     })
