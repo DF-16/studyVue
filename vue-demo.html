@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./lib/animate.css">
     <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
     <script src="./lib/vue-2.4.0.js"></script>
+    <script src="./lib/vue-resource-1.3.4.js"></script>
 </head>
 
 <body>
@@ -53,12 +54,14 @@
         var d = dateStr.getDay();
 
         return `${y}-${m}-${d}`;
-    })
+    });
     Vue.directive('color', {
         bind: function (el, binding) {
             el.style.color = binding.value;
         }
-    })
+    });
+    Vue.http.options.root = 'http://vue.studyit.io';
+    vue.http.options.emulateJSON = true;
     var vm = new Vue({
         el: '#app',
         data: {
@@ -82,6 +85,9 @@
                     ctime: new Date()
                 }
             ]
+        },
+        created() {
+          this.getlist();
         },
         methods: {
             add () {
@@ -120,6 +126,25 @@
                         return item;
                     };
                 });
+            },
+            getlist () {
+              this.$http.get('api/getproduct.json').then(function (result) {
+                if (result.status === 0) {
+                  this.lists = result.message
+                } else {
+                  alert('获取数据失败')
+                }
+              })
+            },
+            addlist () {
+              this.$http.post('api/addproduct.json', {name: this.name}).then(result => {
+                if (result.body.status === 0) {
+                  this.getlist();
+                  this.name = '';
+                } else {
+                  alert('添加失败');
+                }
+              })
             },
         },
     })
